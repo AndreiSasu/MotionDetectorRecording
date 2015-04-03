@@ -53,7 +53,7 @@ http://www.springframework.org/schema/jdbc/spring-jdbc-3.1.xsd">
 		<property name="fileSaverDao" ref="fileSaverDao">
 		</property>
 		<property name="persistentFileDao" ref="persistenFileDao"></property>
-		<property name="credentialToken" value=""></property>
+<!-- 		<property name="credentialToken" value=""></property> -->
 	</bean>
 
 	<bean id="googleDriveSaver" class="com.asasu.motiondetect.savers.GoogleDriveSaver">
@@ -64,7 +64,7 @@ http://www.springframework.org/schema/jdbc/spring-jdbc-3.1.xsd">
 		<property name="fileSaverDao" ref="fileSaverDao">
 		</property>
 		<property name="persistentFileDao" ref="persistenFileDao"></property>
-		<property name="credentialToken" value=""></property>
+<!-- 		<property name="credentialToken" value=""></property> -->
 
 	</bean>
 
