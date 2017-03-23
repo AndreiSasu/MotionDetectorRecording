@@ -41,8 +41,5 @@ public class GetGoogleToken {
 		GoogleTokenResponse response = flow.newTokenRequest(code)
 				.setRedirectUri(REDIRECT_URI).execute();
 		System.out.println(response.getAccessToken());
-
-		GoogleCredential credential = new GoogleCredential()
-		.setFromTokenResponse(response);
 	}
 }

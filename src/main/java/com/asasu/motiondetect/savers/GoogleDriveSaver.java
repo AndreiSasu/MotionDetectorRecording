@@ -119,14 +119,14 @@ public class GoogleDriveSaver implements IFileSaver {
 					this.id) == null) {
 				String fileMimeType = Files.probeContentType(Paths.get(f
 						.getAbsolutePath()));
-				body.setTitle(f.getName());
+				body.setName(f.getName());
 				body.setDescription(f.getName());
 				body.setMimeType(fileMimeType);
 
 				FileContent mediaContent = null;
 				mediaContent = new FileContent(fileMimeType, f);
 				com.google.api.services.drive.model.File remoteFile = googleDriveService
-						.files().insert(body, mediaContent).execute();
+						.files().create(body, mediaContent).execute();
 				this.insertFile(f, remoteFile.getId());
 			} else {
 				String fileMimeType = Files.probeContentType(Paths.get(f
@@ -153,6 +153,7 @@ public class GoogleDriveSaver implements IFileSaver {
 
 		GoogleCredential credential = new GoogleCredential()
 				.setAccessToken(this.credentialToken);
+		credential.refreshToken();
 		googleDriveService = new Drive.Builder(httpTransport, jsonFactory,
 				credential).setApplicationName("Test App").build();
 		this.authenticated = true;
