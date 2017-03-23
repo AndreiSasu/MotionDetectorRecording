@@ -12,7 +12,7 @@ import com.dropbox.core.DbxException;
 import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.DbxWebAuthNoRedirect;
 
-public class GetDropBoxToken {
+public class DropBox {
 	public static void main(String[] args) throws IOException, DbxException {
 		// Get your app key and secret from the Dropbox developers website.
 		final String APP_KEY = "";

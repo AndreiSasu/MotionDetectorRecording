@@ -1,9 +1,11 @@
 package com.asasu.motiondetect;
 
 import java.awt.Dimension;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.support.GenericXmlApplicationContext;
 
 import com.asasu.motiondetect.entity.settings.Policy;
@@ -19,7 +21,7 @@ import com.github.sarxos.webcam.WebcamMotionDetector;
 import com.github.sarxos.webcam.WebcamMotionListener;
 import com.github.sarxos.webcam.WebcamResolution;
 
-public class Main implements Runnable, IConfigurationReloader {
+public class Main implements Runnable, IConfigurationReloader, InitializingBean {
 
 	private Webcam webcam;
 	private int inertia; // how long motion is valid
@@ -30,8 +32,8 @@ public class Main implements Runnable, IConfigurationReloader {
 	private String outFolder;
 	private WebcamMotionDetector motionDetector;
 	private List<IFileSaver> fileSavers;
-	private List<IConfigurationListener> configurationListeners = new ArrayList<IConfigurationListener>();
-	private List<WebcamMotionListener> motionListeners = new ArrayList<WebcamMotionListener>();
+	private List<IConfigurationListener> configurationListeners = new ArrayList<>();
+	private List<WebcamMotionListener> motionListeners = new ArrayList<>();
 
 	public static void main(String[] args) throws InterruptedException {
 		GenericXmlApplicationContext ctx = new GenericXmlApplicationContext();
@@ -144,6 +146,14 @@ public class Main implements Runnable, IConfigurationReloader {
 		// notify listeners
 		for (IConfigurationListener cl : configurationListeners) {
 			cl.onConfigurationChanged();
+		}
+	}
+
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		File directory = new File(outFolder);
+		if (!directory.exists()) {
+			directory.mkdir();
 		}
 	}
 }

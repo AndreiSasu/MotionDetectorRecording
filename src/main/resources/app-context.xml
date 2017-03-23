@@ -1,91 +1,91 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:util="http://www.springframework.org/schema/util" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
 http://www.springframework.org/schema/beans/spring-beans.xsd
 http://www.springframework.org/schema/util
 http://www.springframework.org/schema/util/spring-util.xsd
 http://www.springframework.org/schema/jdbc
 http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
 
-	<description>Example configuration to get you started.</description>
+    <description>Example configuration to get you started.</description>
 
 
-	<bean id="outFolderLocation" class="java.lang.String">
-		<constructor-arg index="0" value="/Users/andrei.sasu/camera/"></constructor-arg>
-	</bean>
+    <bean id="outFolderLocation" class="java.lang.String">
+        <constructor-arg index="0" value="/home/andrei/camera/"></constructor-arg>
+    </bean>
 
-	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
-		<property name="driverClassName" value="org.h2.Driver" />
-		<property name="url" value="jdbc:h2:file:~/file_db" />
-	</bean>
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+        <property name="driverClassName" value="org.h2.Driver"/>
+        <property name="url" value="jdbc:h2:file:~/file_db"/>
+    </bean>
 
-	<jdbc:initialize-database data-source="dataSource">
-		<jdbc:script location="classpath:schema.sql" />
-	</jdbc:initialize-database>
+    <jdbc:initialize-database data-source="dataSource">
+        <jdbc:script location="classpath:schema.sql"/>
+    </jdbc:initialize-database>
 
-	<bean id="persistenFileDao" class="com.asasu.motiondetect.entity.file.PersistentFileDao">
-		<property name="dataSource">
-			<ref bean="dataSource" />
-		</property>
-	</bean>
+    <bean id="persistentFileDao" class="com.asasu.motiondetect.entity.file.PersistentFileDao">
+        <property name="dataSource">
+            <ref bean="dataSource"/>
+        </property>
+    </bean>
 
-	<bean id="fileSaverDao" class="com.asasu.motiondetect.entity.file.FileSaverDao">
-		<property name="dataSource">
-			<ref bean="dataSource" />
-		</property>
-	</bean>
+    <bean id="fileSaverDao" class="com.asasu.motiondetect.entity.file.FileSaverDao">
+        <property name="dataSource">
+            <ref bean="dataSource"/>
+        </property>
+    </bean>
 
-	<bean id="fileSearchClass" class="com.asasu.motiondetect.savers.FileSearch"
-		scope="prototype">
-		<property name="persistentFileDao" ref="persistenFileDao"></property>
-	</bean>
+    <bean id="fileSearchClass" class="com.asasu.motiondetect.savers.FileSearch"
+          scope="prototype">
+        <property name="persistentFileDao" ref="persistentFileDao"></property>
+    </bean>
 
-	<bean id="dropBoxSaver" class="com.asasu.motiondetect.savers.DropBoxSaver">
-		<property name="outFolder" ref="outFolderLocation">
-		</property>
-		<property name="fileSearch" ref="fileSearchClass">
-		</property>
-		<property name="fileSaverDao" ref="fileSaverDao">
-		</property>
-		<property name="persistentFileDao" ref="persistenFileDao"></property>
- 		<!--<property name="credentialToken" value=""></property> -->
-	</bean>
+    <bean id="dropBoxSaver" class="com.asasu.motiondetect.savers.DropBoxSaver">
+        <property name="outFolder" ref="outFolderLocation">
+        </property>
+        <property name="fileSearch" ref="fileSearchClass">
+        </property>
+        <property name="fileSaverDao" ref="fileSaverDao">
+        </property>
+        <property name="persistentFileDao" ref="persistentFileDao"></property>
+        <!--<property name="credentialToken" value=""></property> -->
+    </bean>
 
-	<bean id="googleDriveSaver" class="com.asasu.motiondetect.savers.GoogleDriveSaver">
-		<property name="outFolder" ref="outFolderLocation">
-		</property>
-		<property name="fileSearch" ref="fileSearchClass">
-		</property>
-		<property name="fileSaverDao" ref="fileSaverDao">
-		</property>
-		<property name="persistentFileDao" ref="persistenFileDao"></property>
- 		<!--<property name="credentialToken" value=""></property>-->
+    <bean id="googleDriveSaver" class="com.asasu.motiondetect.savers.GoogleDriveSaver">
+        <property name="outFolder" ref="outFolderLocation">
+        </property>
+        <property name="fileSearch" ref="fileSearchClass">
+        </property>
+        <property name="fileSaverDao" ref="fileSaverDao">
+        </property>
+        <property name="persistentFileDao" ref="persistentFileDao"></property>
+        <property name="remoteFolder" value="MotionDetector"></property>
+    </bean>
 
-	</bean>
+    <bean id="mainApp" class="com.asasu.motiondetect.Main">
+        <property name="pixelThreshold">
+            <value type="int">25</value>
+        </property>
+        <property name="areaThreshold">
+            <value type="double">0.2</value>
+        </property>
+        <property name="inertia">
+            <value type="int">10000</value>
+        </property>
+        <property name="interval">
+            <value type="int">500</value>
+        </property>
+        <property name="motionDetection" value="true"></property>
+        <property name="outFolder" ref="outFolderLocation">
+        </property>
+        <property name="fileSavers">
+            <util:list id="fs">
+                <ref bean="dropBoxSaver"/>
+                <ref bean="googleDriveSaver"/>
+            </util:list>
+        </property>
+    </bean>
 
-	<bean id="mainApp" class="com.asasu.motiondetect.Main">
-		<property name="pixelThreshold">
-			<value type="int">25</value>
-		</property>
-		<property name="areaThreshold">
-			<value type="double">0.2</value>
-		</property>
-		<property name="inertia">
-			<value type="int">10000</value>
-		</property>
-		<property name="interval">
-			<value type="int">500</value>
-		</property>
-		<property name="motionDetection" value="true"></property>
-		<property name="outFolder" ref="outFolderLocation">
-		</property>
-		<property name="fileSavers">
-			<util:list id="fs">
-				<ref bean="dropBoxSaver" />
-				<ref bean="googleDriveSaver" />
-			</util:list>
-		</property>
-	</bean>
 </beans>

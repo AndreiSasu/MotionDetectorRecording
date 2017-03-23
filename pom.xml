@@ -72,9 +72,15 @@
     </build>
 
     <repositories>
+
+        <repository>
+            <id>Default Maven</id>
+            <url>https://files.liferay.com/mirrors/xuggle.googlecode.com/svn/trunk/repo/share/java/</url>
+        </repository>
+
         <repository>
             <id>xuggle repo</id>
-            <url>https://files.liferay.com/mirrors/xuggle.googlecode.com/svn/trunk/repo/share/java/</url>
+            <url>http://repo1.maven.org/maven/</url>
         </repository>
     </repositories>
 
