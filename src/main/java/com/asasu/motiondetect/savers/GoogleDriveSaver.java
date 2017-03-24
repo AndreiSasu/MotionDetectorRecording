@@ -22,13 +22,14 @@ import com.google.api.client.http.FileContent;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.model.FileList;
 
+import static com.asasu.motiondetect.Main.outFolder;
+
 public class GoogleDriveSaver implements IFileSaver {
     private static final Log log = LogFactory.getLog(GoogleDriveSaver.class);
 
     private FileSearch fileSearch;
     private FileSaverDao fileSaverDao;
     private PersistentFileDao persistentFileDao;
-    private String outFolder;
     private String credentialToken;
     private String fileSaverName = "google";
     private Long id;
@@ -40,10 +41,6 @@ public class GoogleDriveSaver implements IFileSaver {
 
     public void setRemoteFolder(String remoteFolder) {
         this.remoteFolder = remoteFolder;
-    }
-
-    public void setOutFolder(String outFolder) {
-        this.outFolder = outFolder;
     }
 
     public void setFileSearch(FileSearch fileSearch) {

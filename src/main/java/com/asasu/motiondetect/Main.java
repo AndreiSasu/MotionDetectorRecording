@@ -29,11 +29,12 @@ public class Main implements Runnable, IConfigurationReloader, InitializingBean 
 	private double areaThreshold;
 	private int interval;
 	private boolean motionDetection;
-	private String outFolder;
 	private WebcamMotionDetector motionDetector;
 	private List<IFileSaver> fileSavers;
 	private List<IConfigurationListener> configurationListeners = new ArrayList<>();
 	private List<WebcamMotionListener> motionListeners = new ArrayList<>();
+
+	public static String outFolder = System.getProperty("user.home") + "/camera/";
 
 	public static void main(String[] args) throws InterruptedException {
 		GenericXmlApplicationContext ctx = new GenericXmlApplicationContext();
