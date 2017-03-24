@@ -132,7 +132,9 @@ public class FileSearch {
 									this.getFileSaverId()).getLastModified()) {
 						modifiedFileNames.add(tempPath);
 					} else {
-						log.debug("Nothing changed for file: " + tempPath);
+						log.debug("Pruning file: " + tempPath);
+						temp.delete();
+                        assert !temp.exists();
 					}
 				}
 			}
