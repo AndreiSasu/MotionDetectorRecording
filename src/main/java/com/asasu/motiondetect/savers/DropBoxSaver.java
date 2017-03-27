@@ -21,7 +21,8 @@ import com.dropbox.core.DbxEntry;
 import com.dropbox.core.DbxException;
 import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.DbxWriteMode;
-import static com.asasu.motiondetect.Main.outFolder;
+import static com.asasu.motiondetect.constants.Constants.outFolder;
+
 public class DropBoxSaver implements IFileSaver {
 	private static final Log log = LogFactory.getLog(DropBoxSaver.class);
 

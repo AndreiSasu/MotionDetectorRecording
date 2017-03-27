@@ -22,7 +22,7 @@ import com.google.api.client.http.FileContent;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.model.FileList;
 
-import static com.asasu.motiondetect.Main.outFolder;
+import static com.asasu.motiondetect.constants.Constants.outFolder;
 
 public class GoogleDriveSaver implements IFileSaver {
     private static final Log log = LogFactory.getLog(GoogleDriveSaver.class);

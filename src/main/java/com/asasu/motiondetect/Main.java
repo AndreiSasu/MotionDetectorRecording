@@ -6,20 +6,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.GenericXmlApplicationContext;
 
+import com.asasu.motiondetect.config.AppConfig;
 import com.asasu.motiondetect.entity.settings.Policy;
 import com.asasu.motiondetect.interfaces.IConfigurationListener;
 import com.asasu.motiondetect.interfaces.IConfigurationReloader;
 import com.asasu.motiondetect.interfaces.IFileSaver;
 import com.asasu.motiondetect.listeners.DetectMotionPictureSaver;
 import com.asasu.motiondetect.listeners.DetectMotionVideoSaver;
+import com.asasu.motiondetect.listeners.FileEventWatcher;
 import com.asasu.motiondetect.services.SettingsService;
 import com.asasu.motiondetect.services.UpdateService;
 import com.github.sarxos.webcam.Webcam;
 import com.github.sarxos.webcam.WebcamMotionDetector;
 import com.github.sarxos.webcam.WebcamMotionListener;
 import com.github.sarxos.webcam.WebcamResolution;
+import static com.asasu.motiondetect.constants.Constants.outFolder;
 
 public class Main implements Runnable, IConfigurationReloader, InitializingBean {
 
@@ -33,8 +38,6 @@ public class Main implements Runnable, IConfigurationReloader, InitializingBean 
 	private List<IFileSaver> fileSavers;
 	private List<IConfigurationListener> configurationListeners = new ArrayList<>();
 	private List<WebcamMotionListener> motionListeners = new ArrayList<>();
-
-	public static String outFolder = System.getProperty("user.home") + "/camera/";
 
 	public static void main(String[] args) throws InterruptedException {
 		GenericXmlApplicationContext ctx = new GenericXmlApplicationContext();
@@ -53,6 +56,10 @@ public class Main implements Runnable, IConfigurationReloader, InitializingBean 
 			mainApp.registerConfigurationListener(fs);
 		}
 		new Thread(mainApp).start();
+
+//		ApplicationContext appConfigAppContext = new AnnotationConfigApplicationContext(AppConfig.class);
+//		FileEventWatcher fileEventWatcher = (FileEventWatcher)appConfigAppContext.getBean("fileEventWatcher");
+//		fileEventWatcher.publish("------");
 	}
 
 	private void startMotionDetection() {
@@ -115,10 +122,6 @@ public class Main implements Runnable, IConfigurationReloader, InitializingBean 
 
 	public void setMotionDetection(boolean motionDetection) {
 		this.motionDetection = motionDetection;
-	}
-
-	public void setOutFolder(String outFolder) {
-		this.outFolder = outFolder;
 	}
 
 	public void setFileSavers(List<IFileSaver> fileSavers) {

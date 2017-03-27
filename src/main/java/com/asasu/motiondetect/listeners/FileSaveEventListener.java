@@ -9,6 +9,7 @@ public class FileSaveEventListener implements ApplicationListener<FileSaveEvent>
 
     @Override
     public void onApplicationEvent(FileSaveEvent fileSaveEvent) {
-
+        fileSaveEvent.getFileName();
+        System.out.println(fileSaveEvent.getFileName());
     }
 }
