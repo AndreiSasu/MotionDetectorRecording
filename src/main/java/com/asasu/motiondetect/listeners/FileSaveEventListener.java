@@ -4,12 +4,14 @@ import javax.inject.Inject;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.context.ApplicationListener;
+import org.springframework.stereotype.Component;
 import com.asasu.motiondetect.interfaces.IFileSaver;
 import com.asasu.motiondetect.interfaces.IFileSaverProvider;
 
 /**
  * Created by andrei.sasu on 3/24/17.
  */
+@Component
 public class FileSaveEventListener implements ApplicationListener<FileSaveEvent> {
 
     private static final Log log = LogFactory.getLog(FileSaveEventListener.class);

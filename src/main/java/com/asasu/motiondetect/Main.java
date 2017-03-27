@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -15,14 +16,12 @@ import com.asasu.motiondetect.config.MainAppConfig;
 import com.asasu.motiondetect.entity.settings.SettingsPolicy;
 import com.asasu.motiondetect.interfaces.IConfigurationListener;
 import com.asasu.motiondetect.interfaces.IConfigurationReloader;
-import com.asasu.motiondetect.interfaces.IFileSaver;
 import com.asasu.motiondetect.interfaces.IFileSaverProvider;
 import com.asasu.motiondetect.listeners.DetectMotionPictureSaver;
 import com.asasu.motiondetect.listeners.DetectMotionVideoSaver;
 import com.asasu.motiondetect.listeners.FileEventWatcher;
 import com.github.sarxos.webcam.Webcam;
 import com.github.sarxos.webcam.WebcamMotionDetector;
-import com.github.sarxos.webcam.WebcamMotionListener;
 import com.github.sarxos.webcam.WebcamResolution;
 import static com.asasu.motiondetect.constants.Constants.outFolder;
 
@@ -32,18 +31,11 @@ import javax.inject.Singleton;
 
 @Named("mainApp")
 @Singleton
-public class Main implements Runnable, IConfigurationReloader, InitializingBean {
+public class Main implements Runnable, IConfigurationReloader, InitializingBean, DisposableBean {
 
 	private Webcam webcam;
-//	private int inertia; // how long motion is valid
-//	private int pixelThreshold;
-//	private double areaThreshold;
-//	private int interval;
-//	private boolean motionDetection;
 	private WebcamMotionDetector motionDetector;
-	private List<IFileSaver> fileSavers;
 	private List<IConfigurationListener> configurationListeners = new ArrayList<>();
-	private List<WebcamMotionListener> motionListeners = new ArrayList<>();
 
     @Inject
     private SettingsPolicy settingsPolicy;
@@ -57,30 +49,11 @@ public class Main implements Runnable, IConfigurationReloader, InitializingBean 
     private static final Log log = LogFactory.getLog(Main.class);
 
 	public static void main(String[] args) throws InterruptedException {
-//		GenericXmlApplicationContext ctx = new GenericXmlApplicationContext();
-//		ctx.load("classpath:app-context.xml");
-//		ctx.refresh();
-//		Main mainApp = (Main) ctx.getBean("mainApp");
-//		mainApp.startWebcam(0); // locks webcam
-//		SettingsService ss = new SettingsService();
-//		ss.setReloadListener(mainApp);
-//		UpdateService us = new UpdateService();
-//
-//		new Thread(ss).start();
-//		new Thread(us).start();
-//		for (IFileSaver fs : mainApp.fileSavers) {
-//			new Thread(fs).start();
-//			mainApp.registerConfigurationListener(fs);
-//		}
-//		new Thread(mainApp).start();
 
 		ApplicationContext mainAppConfigAppContext = new AnnotationConfigApplicationContext(MainAppConfig.class);
         Main main = (Main) mainAppConfigAppContext.getBean("mainApp");
-        log.debug(main.settingsPolicy);
-        log.debug(main.fileEventWatcher);
         new Thread(main.fileEventWatcher).start();
 		new Thread(main.fileSaverProvider.getFileSaver()).start();
-        main.fileEventWatcher.publish("test message has been published");
         main.startWebcam(0); // locks webcam
         new Thread(main).start();
 	}
@@ -127,10 +100,6 @@ public class Main implements Runnable, IConfigurationReloader, InitializingBean 
 		this.webcam = webcam;
 	}
 
-	public void setFileSavers(List<IFileSaver> fileSavers) {
-		this.fileSavers = fileSavers;
-	}
-
 	public void registerConfigurationListener(IConfigurationListener il) {
 		this.configurationListeners.add(il);
 	}
@@ -167,4 +136,9 @@ public class Main implements Runnable, IConfigurationReloader, InitializingBean 
 			directory.mkdir();
 		}
 	}
+
+    @Override
+    public void destroy() throws Exception {
+
+    }
 }

@@ -10,6 +10,7 @@ import java.util.Locale;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.stereotype.Component;
 
 import com.asasu.motiondetect.entity.file.FileSaver;
 import com.asasu.motiondetect.entity.file.FileSaverDao;
@@ -26,6 +27,7 @@ import static com.asasu.motiondetect.constants.Constants.outFolder;
 import javax.inject.Singleton;
 
 @Singleton
+@Component
 public class DropBoxSaver implements IFileSaver {
 	private static final Log log = LogFactory.getLog(DropBoxSaver.class);
 
@@ -38,6 +40,25 @@ public class DropBoxSaver implements IFileSaver {
 	private DbxClient dropBoxClient;
 	private DbxRequestConfig config;
 	private boolean authenticated;
+
+
+    public DropBoxSaver() {
+//        if (credentialToken == null
+//                && fileSaverDao.findByName(this.fileSaverName) == null) {
+//            return;
+//        } else if (credentialToken == null) {
+//            this.credentialToken = fileSaverDao.findByName(this.fileSaverName)
+//                    .getCredentialToken();
+//        }
+//        log.debug("Authenticating");
+//        try {
+//            this.authenticate();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return;
+//        }
+//        this.saveToken();
+    }
 
 	public void setFileSearch(FileSearch fileSearch) {
 		this.fileSearch = fileSearch;
@@ -138,7 +159,12 @@ public class DropBoxSaver implements IFileSaver {
 		}
 	}
 
-	public void authenticate() throws Exception {
+    @Override
+    public String getName() {
+        return fileSaverName;
+    }
+
+    public void authenticate() throws Exception {
 		log.debug(this.credentialToken);
 		config = new DbxRequestConfig("MyApp/1.0", Locale.getDefault()
 				.toString());
@@ -164,25 +190,6 @@ public class DropBoxSaver implements IFileSaver {
 			this.id = fs.getId();
 			fileSearch.setFileSaverId(this.id);
 		}
-	}
-
-	@Override
-	public void afterPropertiesSet() throws Exception {
-		if (credentialToken == null
-				&& fileSaverDao.findByName(this.fileSaverName) == null) {
-			return;
-		} else if (credentialToken == null) {
-			this.credentialToken = fileSaverDao.findByName(this.fileSaverName)
-					.getCredentialToken();
-		}
-		log.debug("Authenticating");
-		this.authenticate();
-		this.saveToken();
-	}
-
-	@Override
-	public void destroy() throws Exception {
-		log.debug("Cleaning up after myself");
 	}
 
 	@Override

@@ -10,6 +10,7 @@ import java.util.Collections;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.stereotype.Component;
 
 import com.asasu.motiondetect.GoogleDrive;
 import com.asasu.motiondetect.entity.file.FileSaver;
@@ -27,6 +28,7 @@ import static com.asasu.motiondetect.constants.Constants.outFolder;
 import javax.inject.Singleton;
 
 @Singleton
+@Component
 public class GoogleDriveSaver implements IFileSaver {
     private static final Log log = LogFactory.getLog(GoogleDriveSaver.class);
 
@@ -60,9 +62,13 @@ public class GoogleDriveSaver implements IFileSaver {
 
     @Override
     public void run() {
-        if(!authenticated) {
-            log.info("Not authenticated, exiting");
-            return;
+        while (!authenticated) {
+            log.info("Not authenticated, sleeping");
+            try {
+                Thread.sleep(10000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
         while (true) {
             try {
@@ -123,12 +129,19 @@ public class GoogleDriveSaver implements IFileSaver {
         }
     }
 
+    @Override
+    public String getName() {
+        return fileSaverName;
+    }
+
     public void authenticate() throws Exception {
         Credential credential = GoogleDrive.authorize();
         credentialToken = credential.getAccessToken();
         googleDriveService = GoogleDrive.getDriveService(credential);
         this.authenticated = true;
         log.debug("Successfully authenticated ");
+        saveToken();
+        createRemoteFolderIfItDoesntExist();
     }
 
     private void saveToken() {
@@ -191,19 +204,6 @@ public class GoogleDriveSaver implements IFileSaver {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        log.debug("Authenticating ");
-//        authenticate();
-//        saveToken();
-//        createRemoteFolderIfItDoesntExist();
-    }
-
-    @Override
-    public void destroy() throws Exception {
-        log.debug("Cleaning up after myself");
     }
 
     @Override
