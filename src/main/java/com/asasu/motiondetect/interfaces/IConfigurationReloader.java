@@ -1,7 +1,7 @@
 package com.asasu.motiondetect.interfaces;
 
-import com.asasu.motiondetect.entity.settings.Policy;
+import com.asasu.motiondetect.entity.settings.SettingsPolicy;
 
 public interface IConfigurationReloader {
-	public void reloadConfiguration(Policy policy);
+	void reloadConfiguration(SettingsPolicy settingsPolicy);
 }

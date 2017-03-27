@@ -24,6 +24,9 @@ import com.google.api.services.drive.model.FileList;
 
 import static com.asasu.motiondetect.constants.Constants.outFolder;
 
+import javax.inject.Singleton;
+
+@Singleton
 public class GoogleDriveSaver implements IFileSaver {
     private static final Log log = LogFactory.getLog(GoogleDriveSaver.class);
 
@@ -57,13 +60,9 @@ public class GoogleDriveSaver implements IFileSaver {
 
     @Override
     public void run() {
-        while (!authenticated) {
-            log.debug("Not authenticated, exiting");
-            try {
-                Thread.sleep(10000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+        if(!authenticated) {
+            log.info("Not authenticated, exiting");
+            return;
         }
         while (true) {
             try {
@@ -197,9 +196,9 @@ public class GoogleDriveSaver implements IFileSaver {
     @Override
     public void afterPropertiesSet() throws Exception {
         log.debug("Authenticating ");
-        authenticate();
-        saveToken();
-        createRemoteFolderIfItDoesntExist();
+//        authenticate();
+//        saveToken();
+//        createRemoteFolderIfItDoesntExist();
     }
 
     @Override

@@ -1,10 +1,14 @@
 package com.asasu.motiondetect.listeners;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
 public class FileEventWatcher implements ApplicationContextAware, Runnable {
+
+    private static final Log log = LogFactory.getLog(FileEventWatcher.class);
 
     private ApplicationContext ctx;
 
@@ -19,6 +23,6 @@ public class FileEventWatcher implements ApplicationContextAware, Runnable {
 
     @Override
     public void run() {
-        this.publish("----");
+        log.debug(FileEventWatcher.class + " running.");
     }
 }

@@ -23,6 +23,9 @@ import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.DbxWriteMode;
 import static com.asasu.motiondetect.constants.Constants.outFolder;
 
+import javax.inject.Singleton;
+
+@Singleton
 public class DropBoxSaver implements IFileSaver {
 	private static final Log log = LogFactory.getLog(DropBoxSaver.class);
 
@@ -54,13 +57,8 @@ public class DropBoxSaver implements IFileSaver {
 
 	@Override
 	public void run() {
-		while (!authenticated) {
+		if (!authenticated) {
 			log.debug("Not authenticated, exiting");
-			try {
-				Thread.sleep(10000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
 		}
 		while (true) {
 			try {

@@ -1,22 +1,46 @@
 package com.asasu.motiondetect.entity.settings;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import javax.inject.Named;
+import com.asasu.motiondetect.interfaces.IFileSaver;
 
-public class Policy {
-	private String policyName;
-	private int areaThreshold;
-	private long inertia;
-	private boolean motionDetection;
-	private long motionDetectInterval;
-	private long motionInertia;
-	private String outFolder;
-	private String googleRefreshToken;
-	private String dropBoxRefreshToken;
-	private int streamPort;
-	private boolean applied;
-	private Date dateSent;
-	private Date dateApplied;
-	private int id;
+@Named("settingsPolicy")
+public class SettingsPolicy {
+	private String policyName = "DEFAULT";
+    private int pixelThreshold = 25;
+    private double areaThreshold = 0.2;
+    private long inertia = 500;
+    private boolean motionDetection = true;
+    private int motionDetectInterval = 500;
+    private int motionInertia = 10000;
+    private String outFolder;
+    private String googleRefreshToken;
+    private String dropBoxRefreshToken;
+    private int streamPort;
+    private boolean applied = true;
+    private Date dateSent;
+    private Date dateApplied;
+    private int id;
+
+    public List<IFileSaver> getFileSavers() {
+        return fileSavers;
+    }
+
+    public void setFileSavers(List<IFileSaver> fileSavers) {
+        this.fileSavers = fileSavers;
+    }
+
+    private List<IFileSaver> fileSavers = new ArrayList<>();
+
+    public int getPixelThreshold() {
+        return pixelThreshold;
+    }
+
+    public void setPixelThreshold(int pixelThreshold) {
+        this.pixelThreshold = pixelThreshold;
+    }
 
 	public String getPolicyName() {
 		return policyName;
@@ -26,11 +50,11 @@ public class Policy {
 		this.policyName = policyName;
 	}
 
-	public int getAreaThreshold() {
+	public double getAreaThreshold() {
 		return areaThreshold;
 	}
 
-	public void setAreaThreshold(int areaThreshold) {
+	public void setAreaThreshold(double areaThreshold) {
 		this.areaThreshold = areaThreshold;
 	}
 
@@ -50,19 +74,19 @@ public class Policy {
 		this.motionDetection = motionDetection;
 	}
 
-	public long getMotionDetectInterval() {
+	public int getMotionDetectInterval() {
 		return motionDetectInterval;
 	}
 
-	public void setMotionDetectInterval(long motionDetectInterval) {
+	public void setMotionDetectInterval(int motionDetectInterval) {
 		this.motionDetectInterval = motionDetectInterval;
 	}
 
-	public long getMotionInertia() {
+	public int getMotionInertia() {
 		return motionInertia;
 	}
 
-	public void setMotionInertia(long motionInertia) {
+	public void setMotionInertia(int motionInertia) {
 		this.motionInertia = motionInertia;
 	}
 
