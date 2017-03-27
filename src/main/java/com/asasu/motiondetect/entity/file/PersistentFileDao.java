@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Inject;
 import javax.sql.DataSource;
 
 import org.apache.commons.logging.Log;
@@ -21,7 +22,9 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
 import com.asasu.motiondetect.interfaces.IPersistentFileDao;
+import org.springframework.stereotype.Component;
 
+@Component
 public class PersistentFileDao implements IPersistentFileDao {
 	private Log log = LogFactory.getLog(PersistentFileDao.class);
 	private DataSource dataSource;
@@ -165,6 +168,7 @@ public class PersistentFileDao implements IPersistentFileDao {
 		});
 	}
 
+	@Inject
 	public void setDataSource(DataSource dataSource) {
 		this.dataSource = dataSource;
 		this.jdbcTemplate = new JdbcTemplate(dataSource);

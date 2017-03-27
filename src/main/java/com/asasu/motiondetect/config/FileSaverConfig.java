@@ -17,24 +17,6 @@ import com.asasu.motiondetect.savers.ConfigurableFileSaverProvider;
  */
 @Configuration
 @Import(PersistenceConfig.class)
-@ComponentScan(basePackages = {"com.asasu.motiondetect"})
 public class FileSaverConfig {
 
-    @Autowired
-    Environment env;
-
-//    @Bean(name = "fileEventWatcher")
-//    FileEventWatcher fileEventWatcher() {
-//        return new FileEventWatcher();
-//    }
-
-//    @Bean(name = "fileSaveEventListener")
-//    FileSaveEventListener fileSaveEventListener() {
-//        return new FileSaveEventListener(fileSaverProvider());
-//    }
-
-//    @Bean(name = "fileSaverProvider")
-//    IFileSaverProvider fileSaverProvider() {
-//        return new ConfigurableFileSaverProvider();
-//    }
 }

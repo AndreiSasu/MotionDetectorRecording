@@ -19,36 +19,21 @@ import com.asasu.motiondetect.interfaces.IFileSaverProvider;
 @Service
 public class ConfigurableFileSaverProvider implements IFileSaverProvider {
 
-
     @Autowired
     Environment env;
-
-    IFileSaver fileSaver;
-
-    @Inject
-    SettingsPolicy settingsPolicy;
 
     @Inject
     private List<IFileSaver> fileSavers;
 
-
     final Map<String, IFileSaver> fileSaverCache = new HashMap<>();
-
-    public ConfigurableFileSaverProvider() {
-//        fileSavers.forEach(fileSaver2 -> {
-//            fileSaverCache.put(fileSaver2.getName(), fileSaver2);
-//        });
-////        IFileSaver fileSaver1 = fileSaverCache.get(fileSaver);
-////        this.fileSaver = fileSaver1;
-    }
 
     @PostConstruct
     public void initIalizeMaps() {
-        getFileSaver();
+        fileSavers.forEach(iFileSaver -> fileSaverCache.put(iFileSaver.toString(), iFileSaver));
     }
 
     @Override
     public IFileSaver getFileSaver() {
-        return new GoogleDriveSaver();
+        return fileSaverCache.get("google");
     }
 }

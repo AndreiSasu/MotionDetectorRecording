@@ -8,6 +8,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import com.asasu.motiondetect.entity.settings.SettingsPolicy;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Component;
@@ -24,6 +25,7 @@ import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.DbxWriteMode;
 import static com.asasu.motiondetect.constants.Constants.outFolder;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
@@ -42,7 +44,8 @@ public class DropBoxSaver implements IFileSaver {
 	private boolean authenticated;
 
 
-    public DropBoxSaver() {
+	@Inject
+    public DropBoxSaver(SettingsPolicy policy) {
 //        if (credentialToken == null
 //                && fileSaverDao.findByName(this.fileSaverName) == null) {
 //            return;
@@ -160,7 +163,7 @@ public class DropBoxSaver implements IFileSaver {
 	}
 
     @Override
-    public String getName() {
+    public String toString() {
         return fileSaverName;
     }
 
@@ -198,5 +201,15 @@ public class DropBoxSaver implements IFileSaver {
 		// get new settings from db
 		// apply new settings
 		// call authenticate() && saveOrUpdateToken()
+	}
+
+	@Override
+	public void destroy() throws Exception {
+
+	}
+
+	@Override
+	public void afterPropertiesSet() throws Exception {
+//		authenticate();
 	}
 }

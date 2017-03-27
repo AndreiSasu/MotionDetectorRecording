@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Inject;
 import javax.sql.DataSource;
 
 import org.apache.commons.logging.Log;
@@ -21,7 +22,9 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
 import com.asasu.motiondetect.interfaces.IFileSaverDao;
+import org.springframework.stereotype.Component;
 
+@Component
 public class FileSaverDao implements IFileSaverDao {
 	private Log log = LogFactory.getLog(FileSaverDao.class);
 
@@ -124,10 +127,11 @@ public class FileSaverDao implements IFileSaverDao {
 		return null;
 	}
 
-	public void setDataSource(DataSource ds) {
-		this.dataSource = ds;
-		this.insertFileSaver = new InsertFileSaver(ds);
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(ds);
-		this.jdbcTemplate = new JdbcTemplate(ds);
+	@Inject
+	public void setDataSource(DataSource dataSource) {
+		this.dataSource = dataSource;
+		this.insertFileSaver = new InsertFileSaver(dataSource);
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+		this.jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 }

@@ -8,6 +8,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import com.asasu.motiondetect.entity.settings.SettingsPolicy;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Component;
@@ -23,8 +24,7 @@ import com.google.api.client.http.FileContent;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.model.FileList;
 
-import static com.asasu.motiondetect.constants.Constants.outFolder;
-
+import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
@@ -32,9 +32,15 @@ import javax.inject.Singleton;
 public class GoogleDriveSaver implements IFileSaver {
     private static final Log log = LogFactory.getLog(GoogleDriveSaver.class);
 
+    @Inject
     private FileSearch fileSearch;
+
+    @Inject
     private FileSaverDao fileSaverDao;
+
+    @Inject
     private PersistentFileDao persistentFileDao;
+
     private String credentialToken;
     private String fileSaverName = "google";
     private Long id;
@@ -43,6 +49,14 @@ public class GoogleDriveSaver implements IFileSaver {
 
     private String remoteFolder;
     private String remoteFolderId;
+
+    private SettingsPolicy settingsPolicy;
+
+    @Inject
+    public GoogleDriveSaver(SettingsPolicy policy) {
+        this.settingsPolicy = policy;
+        setRemoteFolder(settingsPolicy.getRemoteFolder());
+    }
 
     public void setRemoteFolder(String remoteFolder) {
         this.remoteFolder = remoteFolder;
@@ -72,7 +86,7 @@ public class GoogleDriveSaver implements IFileSaver {
         }
         while (true) {
             try {
-                fileSearch.searchDirectory(new File(outFolder));
+                fileSearch.searchDirectory(new File(settingsPolicy.getOutFolder()));
             } catch (NoSuchAlgorithmException | IOException e1) {
                 e1.printStackTrace();
             }
@@ -130,7 +144,7 @@ public class GoogleDriveSaver implements IFileSaver {
     }
 
     @Override
-    public String getName() {
+    public String toString() {
         return fileSaverName;
     }
 
@@ -212,5 +226,15 @@ public class GoogleDriveSaver implements IFileSaver {
         // get new settings from db
         // apply new settings
         // call afterPropertiesSet
+    }
+
+    @Override
+    public void destroy() throws Exception {
+
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        authenticate();
     }
 }

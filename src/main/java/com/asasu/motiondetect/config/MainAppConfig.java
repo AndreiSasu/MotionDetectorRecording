@@ -13,11 +13,6 @@ import com.asasu.motiondetect.entity.settings.SettingsPolicy;
 @Import(FileSaverConfig.class)
 public class MainAppConfig {
 
-//    @Bean(name = "settingsPolicy")
-//    SettingsPolicy policy() {
-//        return new SettingsPolicy();
-//    }
-
     @Bean(name = "mainApp")
     Main mainApp() {
         return new Main();

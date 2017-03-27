@@ -17,13 +17,19 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.asasu.motiondetect.entity.file.PersistentFileDao;
+import org.springframework.stereotype.Component;
 
+import javax.inject.Inject;
+
+@Component
 public class FileSearch {
 	private static final Log log = LogFactory.getLog(FileSearch.class);
 
 	private String fileNameToSearch;
 	private ArrayList<String> modifiedFileNames = new ArrayList<String>();
 	private Long fileSaverId;
+
+	@Inject
 	private PersistentFileDao persistentFileDao;
 
 	public void setPersistentFileDao(PersistentFileDao persistentFileDao) {

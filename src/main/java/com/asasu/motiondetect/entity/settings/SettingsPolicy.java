@@ -3,11 +3,14 @@ package com.asasu.motiondetect.entity.settings;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import javax.inject.Named;
-import com.asasu.motiondetect.interfaces.IFileSaver;
 
-@Named("settingsPolicy")
+import com.asasu.motiondetect.constants.Constants;
+import com.asasu.motiondetect.interfaces.IFileSaver;
+import org.springframework.stereotype.Component;
+
+@Component
 public class SettingsPolicy {
+
 	private String policyName = "DEFAULT";
     private int pixelThreshold = 25;
     private double areaThreshold = 0.2;
@@ -15,7 +18,7 @@ public class SettingsPolicy {
     private boolean motionDetection = true;
     private int motionDetectInterval = 500;
     private int motionInertia = 10000;
-    private String outFolder;
+    private String outFolder = Constants.outFolder;
     private String googleRefreshToken;
     private String dropBoxRefreshToken;
     private int streamPort;
@@ -24,6 +27,7 @@ public class SettingsPolicy {
     private Date dateApplied;
     private int id;
     private String remoteFolder = "MotionDetectorRecording";
+    private List<IFileSaver> fileSavers = new ArrayList<>();
 
     public String getRemoteFolder() {
         return remoteFolder;
@@ -40,8 +44,6 @@ public class SettingsPolicy {
     public void setFileSavers(List<IFileSaver> fileSavers) {
         this.fileSavers = fileSavers;
     }
-
-    private List<IFileSaver> fileSavers = new ArrayList<>();
 
     public int getPixelThreshold() {
         return pixelThreshold;
