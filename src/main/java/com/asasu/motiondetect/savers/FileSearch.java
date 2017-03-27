@@ -141,6 +141,7 @@ public class FileSearch {
 						log.debug("Pruning file: " + tempPath);
 						temp.delete();
                         assert !temp.exists();
+                        modifiedFileNames.remove(tempPath);
 					}
 				}
 			}
