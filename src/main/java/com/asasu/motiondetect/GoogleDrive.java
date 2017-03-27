@@ -21,14 +21,16 @@ import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.asasu.motiondetect.constants.Constants.secretsFile;
+import static com.asasu.motiondetect.constants.Constants.configurationFolder;
+
 public class GoogleDrive {
     /** Application name. */
     private static final String APPLICATION_NAME =
             "Drive API Java Quickstart";
 
     /** Directory to store user credentials for this application. */
-    private static final java.io.File DATA_STORE_DIR = new java.io.File(
-            System.getProperty("user.home"), ".credentials/motion-detector-recording");
+    private static final java.io.File DATA_STORE_DIR = new java.io.File(configurationFolder + "/motion-detector-recording");
 
     /** Global instance of the {@link FileDataStoreFactory}. */
     private static FileDataStoreFactory DATA_STORE_FACTORY;
@@ -65,7 +67,7 @@ public class GoogleDrive {
      */
     public static Credential authorize() throws IOException {
         // Load client secrets.
-        InputStream in = new FileInputStream(System.getProperty("user.home") + "/.credentials/client_secret.json");
+        InputStream in = new FileInputStream(secretsFile);
         GoogleClientSecrets clientSecrets =
                 GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));
 

@@ -23,6 +23,15 @@ public class SettingsPolicy {
     private Date dateSent;
     private Date dateApplied;
     private int id;
+    private String remoteFolder = "MotionDetectorRecording";
+
+    public String getRemoteFolder() {
+        return remoteFolder;
+    }
+
+    public void setRemoteFolder(String remoteFolder) {
+        this.remoteFolder = remoteFolder;
+    }
 
     public List<IFileSaver> getFileSavers() {
         return fileSavers;

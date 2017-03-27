@@ -55,26 +55,4 @@ http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
         <property name="remoteFolder" value="MotionDetector"></property>
     </bean>
 
-    <bean id="mainApp" class="com.asasu.motiondetect.Main">
-        <property name="pixelThreshold">
-            <value type="int">25</value>
-        </property>
-        <property name="areaThreshold">
-            <value type="double">0.2</value>
-        </property>
-        <property name="inertia">
-            <value type="int">10000</value>
-        </property>
-        <property name="interval">
-            <value type="int">500</value>
-        </property>
-        <property name="motionDetection" value="true"></property>
-        <property name="fileSavers">
-            <util:list id="fs">
-                <ref bean="dropBoxSaver"/>
-                <ref bean="googleDriveSaver"/>
-            </util:list>
-        </property>
-    </bean>
-
 </beans>
